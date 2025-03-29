@@ -10,12 +10,8 @@ import axios from 'axios'
 
 global.owner = [
   ['584146277368', 'Barboza OFC',true],
-  ['584123989549', 'sisked',true],
-  ['5216671548329', 'legna',true], 
-  ['50557865603', 'Willzek',true],
-  ['50488198573', '𝑫𝒆𝒚𝒍𝒊𝒏',true],
-  ['5212441357601', 'Emma (Violets Version)',true], // Abran paso al Desarrollador más Chingón que encontramos 
-  ['5216633900512', 'ʙʀᴀʏᴀɴ ᴏғᴄ',true],
+  ['51941658192', 'Aamon',true],
+  
 ]
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
@@ -26,16 +22,16 @@ global.prems = []
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
 global.packname = `[ 🌪️Sticker Maker`
-global.author = 'ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ 🌪️]'
-global.stickpack = '©ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ-ᥲі'
-global.stickauth = 'ᑲᥡ ᑲᥲrᑲ᥆zᥲ'
-global.wm = 'ᑲᥲrᑲ᥆zᥲ 🌪️'
-global.dev = '© ⍴᥆ᥕᥱrᥱძ ᑲᥡ ᑲᥲrᑲ᥆zᥲ ❀'
-global.wait = '🌪️ *Aɢᴜᴀʀᴅᴇ ᴜɴ ᴍᴏᴍᴇɴᴛᴏ, sᴏʏ ʟᴇɴᴛ𝙾... ฅ^•ﻌ•^ฅ\n\n> ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ 🌪️*'
-global.botname = '[ 🌪️𝐁𝐚𝐫𝐛𝐨𝐳𝐚 𝐀𝐢 𝐖𝐡𝐚𝐬𝐀𝐩𝐩 𝐁𝐨𝐭 ]'
+global.author = 'Bot Aamon 🌪️]'
+global.stickpack = '© Bot Aamon Ai'
+global.stickauth = 'by Aamon'
+global.wm = 'Aamon 🌪️'
+global.dev = '© Powered By Aamon❀'
+global.wait = '🌪️ *Aɢᴜᴀʀᴅᴇ ᴜɴ ᴍᴏᴍᴇɴᴛᴏ, sᴏʏ ʟᴇɴᴛ𝙾... ฅ^•ﻌ•^ฅ\n\n> Aamon 🌪️*'
+global.botname = '[ 🌪️Aamon bot Ai]'
 global.textbot = `Powered By Bot Barboza🌪️`
 global.listo = '*Aqui tiene ฅ^•ﻌ•^ฅ*'
-global.namechannel = 'ᑲ᥆𝗍 ᑲᥲrᑲ᥆zᥲ-ᥲі🌪️'
+global.namechannel = 'Aamon bot 🌪️'
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
