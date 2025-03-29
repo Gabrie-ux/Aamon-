@@ -3,17 +3,17 @@ let handler  = async (m, { conn, usedPrefix, command }) => {
 
 let grupos = `*Hola!, te invito a unirte a los grupos oficiales del Bot para convivir con la comunidad* ⭐
 
-1-Bot Barboza
-*✰* https://chat.whatsapp.com/GB1m5mhAUsNF0hSKQ508ID
+1-Aamon
+*✰* https://chat.whatsapp.com/FeWfraCmhn0BFtRatwm7oM
 
 *─ׄ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׅ─ׄ⭒─ׄ─ׄ*
 
 ➠ Enlace anulado? entre aquí! 
 
 ⭐ Canal :
-*✰* https://whatsapp.com/channel/0029Vaua0ZD3gvWjQaIpSy18
+*✰* https://whatsapp.com/channel/0029Vb5mi8y3wtb4XeFy8i2i
 
-> By Barboza Bot`
+> By Aamon`
 
 await conn.sendFile(m.chat, imagen2, "ian.jpg", grupos, m, null, rcanal)
 
