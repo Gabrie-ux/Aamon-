@@ -29,7 +29,7 @@ let handler = async (m, { conn, text, usedPrefix }) => {
   }
 
   const key = await conn.sendMessage(m.chat, {
-    text: `⌘━─━─≪ *Barboza Bot AI* ≫─━─━⌘\n\n🔎 *Procesando tu solicitud, por favor espera...*`,
+    text: `⌘━─━─≪ *Bot* ≫─━─━⌘\n\n🔎 *Procesando tu solicitud, por favor espera...*`,
   });
 
   try {
@@ -38,7 +38,7 @@ let handler = async (m, { conn, text, usedPrefix }) => {
     const { title, duration, views, author, url: videoUrl } = metadata;
     const { url: downloadUrl } = download;
 
-    const description = `⌘━─━─≪ *Barboza Bot AI* ≫─━─━⌘\n\n🎵 *Título:* ${title}\n⏳ *Duración:* ${duration.timestamp || "Desconocida"}\n👁️ *Vistas:* ${views.toLocaleString() || "Desconocidas"}\n✍️ *Autor:* ${author.name || "Desconocido"}\n🔗 *Enlace del video:* ${videoUrl}\n\n✨ *Tu archivo se está enviando como documento, por favor espera...*\n\n⌘━━─≪ Power By Barboza Bot AI ≫─━━⌘`;
+    const description = `⌘━─━─≪ * Bot AI* ≫─━─━⌘\n\n🎵 *Título:* ${title}\n⏳ *Duración:* ${duration.timestamp || "Desconocida"}\n👁️ *Vistas:* ${views.toLocaleString() || "Desconocidas"}\n✍️ *Autor:* ${author.name || "Desconocido"}\n🔗 *Enlace del video:* ${videoUrl}\n\n✨ *Tu archivo se está enviando como documento, por favor espera...*\n\n⌘━━─≪ Power By Barboza Bot AI ≫─━━⌘`;
 
     await conn.sendMessage(m.chat, { text: description, edit: key });
     await conn.sendMessage(
@@ -47,7 +47,7 @@ let handler = async (m, { conn, text, usedPrefix }) => {
         document: { url: downloadUrl },
         mimetype: "audio/mpeg",
         fileName: `${title}.mp3`,
-        caption: `🎶 *Descarga completada por Barboza Bot AI*`,
+        caption: `🎶 *Descarga completada por Aamon*`,
       },
       { quoted: m }
     );
