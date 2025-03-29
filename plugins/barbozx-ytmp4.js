@@ -28,7 +28,7 @@ let handler = async (m, { conn, text, usedPrefix }) => {
   try {
     // Mensaje inicial
     const initialMessage = `
-╭━━━📡 **Barboza Bot AI** 📡━━━╮
+╭━━━📡 ** Bot AI** 📡━━━╮
 🔍 *Procesando tu solicitud...*
 💾 *Descargando el video...*
 ⏳ *Esto puede tardar unos momentos.*
