@@ -1,11 +1,11 @@
 import fetch from 'node-fetch'
 
 export async function before(m, { conn }) {
-let name = 'Bot Barboza Ai - Test ⭐'
-let imagenes = ["https://qu.ax/LJEVX.jpg",
-"https://f.uguu.se/tbPTKaaM.jpg",
-"https://f.uguu.se/tbPTKaaM.jpg",
-"https://f.uguu.se/tbPTKaaM.jpg",]
+let name = 'Bot Aamon - Test ⭐'
+let imagenes = ["https://qu.ax/fPklC.jpg",
+"https://qu.ax/fPklC.jpg",
+"https://qu.ax/fPklC.jpg",
+"https://qu.ax/fPklC.jpg",]
 
 let icono = imagenes[Math.floor(Math.random() * imagenes.length)]
 
@@ -13,7 +13,7 @@ global.rcanal = {
  contextInfo: {
              isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363414007802886@newsletter",
+      newsletterJid: "120363419364337473@newsletter",
       serverMessageId: 100,
       newsletterName: name,
    }, 
@@ -62,7 +62,7 @@ global.icono = [
     contextInfo: {
             isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363414007802886@newsletter",
+      newsletterJid: "120363419364337473@newsletter",
       serverMessageId: 100,
       newsletterName: name,
     },
