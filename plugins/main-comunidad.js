@@ -1,17 +1,17 @@
 const handler = async (m, { conn }) => {
-  let gifUrl = "https://qu.ax/LJEVX.jpg";
+  let gifUrl = "https://qu.ax/fPklC.jpg";
 
   let text = `
  ──────── ⚔ ────────  
      *COMUNIDAD*  
 ──────── ⚔ ────────  
 
-*Bot barboza*  
+*Aamon*  
 • ,👥➤ **Grupo de WhatsApp de la comunidad de Bot Barboza Ai**  
    Únete para compartir y resolver dudas con otros usuarios. 
   ➤https://whatsapp.com/channel/0029Vaua0ZD3gvWjQaIpSy18
 
-• 📢 ➤ *Canal de Bot Barboza Ai*  
+• 📢 ➤ *Canal de Aamon*  
    Recibe actualizaciones, noticias y lanzamientos del bot.  
 https://whatsapp.com/channel/0029Vaua0ZD3gvWjQaIpSy18
 • 💬 ➤ *Grupo de WhatsApp activo*  
@@ -20,7 +20,7 @@ https://whatsapp.com/channel/0029Vaua0ZD3gvWjQaIpSy18
 
 ──────── ⚔ ────────  
 🔍 *¿Sabías que...?* 
-- El bot Barboza Ai es actualizado regularmente para mejorar su desempeño.  
+- El Aamon bot es actualizado regularmente para mejorar su desempeño.  
 - Puedes sugerir mejoras o reportar errores directamente en los grupos.  
 - Nuestra comunidad sigue creciendo y cuenta con soporte activo.  
 -
