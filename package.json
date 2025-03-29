@@ -1,5 +1,5 @@
 {
-  "name": "Barboza",
+  "name": "Aamon",
   "version": "2.2.0",
   "description": "Super WhatsApp Bot Multi Device",
   "main": "index.js",
@@ -18,16 +18,16 @@
     "eslint": "eslint .",
     "eslintfix": "eslint --fix ."
   },
-  "homepage": "https://github.com/Elrebelde1/BarbozaBot-Ai.git",
+  "homepage": "https://github.com/Gabrie-ux/Aamon-.git",
   "author": {
-    "name": "Barboza"
+    "name": "Amon"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Elrebelde1/BarbozaBot-Ai.git"
+    "url": "https://github.com/Gabrie-ux/Aamon-.git"
   },
   "bugs": {
-    "url": "https://github.com/Elrebelde1/BarbozaBot-Ai.git"
+    "url": "https://github.com/Gabrie-ux/Aamon-.git"
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
