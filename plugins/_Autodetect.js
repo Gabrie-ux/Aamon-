@@ -28,45 +28,45 @@ END:VCARD`
 
   // Diseños con estilo Astro-Bot
   let nombre = `
-╔═【 🚀 BARBOZA-BOT ALERTA 】═╗
+╔═【 🚀 Aamon-BOT ALERTA 】═╗
 ║ *${usuario}* ha reconfigurado el cosmos del grupo.
 ║ ✨ Nuevo nombre detectado:
 ║   » *<${m.messageStubParameters[0]}>*
 ╚════════════════════════╝`
   
   let foto = `
-╔═【 🪐 BARBOZA-BOT OBSERVA 】═╗
+╔═【 🪐 Aamon-BOT OBSERVA 】═╗
 ║ *${usuario}* ha reprogramado la imagen del universo.
 ║ 📸 Nueva imagen aplicada al grupo.
 ╚════════════════════════╝`
   
   let edit = `
-╔═【 💫 BARBOZA-BOT CONFIG 】═╗
+╔═【 💫 Aamon-BOT CONFIG 】═╗
 ║ *${usuario}* ha modificado los protocolos.
 ║ Configuración actual: ${m.messageStubParameters[0] == 'on' ? 'Solo administradores' : 'Todos'}
 ╚═══════════════════════╝`
   
   let newlink = `
-╔══【🔗 BARBOZA-BOT LINK 】══╗
+╔══【🔗 Aamon-BOT LINK 】══╗
 ║ El portal ha sido reiniciado por:
 ║   » *${usuario}*
 ╚═══════════════════════╝`
   
   let status = `
-╔═【🔓 BARBOZA-BOT STATUS 】═╗
+╔═【🔓 Aamon-BOT STATUS 】═╗
 ║ El grupo se encuentra ahora ${m.messageStubParameters[0] == 'on' ? '*cerrado 🔒*' : '*abierto 🔓*'}.
 ║ Acción realizada por: *${usuario}*
 ║ Configuración: ${m.messageStubParameters[0] == 'on' ? 'Solo administradores' : 'Todos'}
 ╚═══════════════════════╝`
   
   let admingp = `
-╔═【 👑 BARBOZA-BOT ADMIN 】═╗
+╔═【 👑 Aamon-BOT ADMIN 】═╗
 ║ *${m.messageStubParameters[0].split`@`[0]}* ha sido ascendido al Olimpo de los administradores.
 ║ Operación ejecutada por: *${usuario}*
 ╚═══════════════════════╝`
   
   let noadmingp = `
-╔═【⚠️ BARBOZA-BOT REMOCIÓN】═╗
+╔═【⚠️ Aamon-BOT REMOCIÓN】═╗
 ║ *${m.messageStubParameters[0].split`@`[0]}* ha descendido de su trono de administrador.
 ║ Acción realizada por: *${usuario}*
 ╚═══════════════════════╝`
