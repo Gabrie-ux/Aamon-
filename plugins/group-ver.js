@@ -2,7 +2,7 @@
 let handler = async (m, { conn }) => {
     // Verifica si hay un mensaje citado y si es una imagen
     if (!m.quoted || !m.quoted.image) {
-        return conn.reply(m.chat, '❌ Por favor, envía una imagen y luego usa el comando .ver.', m);
+        return conn.reply(m.chat, '❌ Por favor, envía una imagen y luego usa el comando para verla.', m);
     }
 
     // Verifica si la imagen ya ha sido vista
@@ -19,7 +19,7 @@ let handler = async (m, { conn }) => {
     await conn.sendMessage(m.chat, { image: imgBuffer, caption: 'Aquí está la imagen que solicitaste.' }, { quoted: m });
 }
 
-handler.command = ['ver'];
-handler.group = true;
+handler.command = ['ver']; // Puedes cambiar esto por cualquier otro comando que prefieras
+handler.group = true; // Esto permite que el comando funcione en grupos
 
 export default handler;
