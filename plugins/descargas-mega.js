@@ -14,7 +14,7 @@ let handler = async (m, { conn, args, usedPrefix, text, command }) => {
 
         m.react(rwait);
 
-        const caption = `   *--- ${botName} ---*\nFile: ${file.name}\nSize: ${formatBytes(file.size)}\n> ৎ୭࠭͢Bot Barboza Súper Bot𓆪͟͞ `;
+        const caption = `   *--- ${botName} ---*\nFile: ${file.name}\nSize: ${formatBytes(file.size)}\n> ৎ୭࠭͢Bot Aamon Súper Bot𓆪͟͞ `;
 
         const data = await file.downloadBuffer();
 
