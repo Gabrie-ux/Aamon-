@@ -1,4 +1,4 @@
- 
+
 let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!text) return conn.reply(m.chat, '🌠 ¿Qué comando quieres sugerir?', m);
     if (text.length < 5) return conn.reply(m.chat, '🌠 La sugerencia debe ser más de 5 caracteres.', m);
@@ -15,7 +15,10 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
             throw new Error('JID inválido o no se pudo decodificar.');
         }
 
-        await conn.reply(channelChatId, m.quoted ? teks + '\n' + m.quoted.text : teks, m, { mentions: conn.parseMention(teks) });
+        // Se asegura que m.quoted.text esté definido antes de usarlo
+        const replyText = m.quoted ? teks + '\n' + (m.quoted.text || '') : teks;
+
+        await conn.reply(channelChatId, replyText, m, { mentions: conn.parseMention(teks) });
         await conn.reply(creatorsChatId, teks, m, { mentions: conn.parseMention(teks) });
 
         m.reply('🌠 La sugerencia se envió al Staff De aamon y a los creadores.');
