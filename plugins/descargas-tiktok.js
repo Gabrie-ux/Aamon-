@@ -1,184 +1,141 @@
-import axios from "axios";
-import cheerio from "cheerio";
+import axios from 'axios';
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) {
-    return conn.reply(m.chat, `Usa el formato: ${usedPrefix + command} <enlace de TikTok>`, m);
+// Validador para que solo se procese URLs de TikTok
+const isTikTokUrl = (url) => /https?:\/\/(www\.)?(vm\.)?tiktok\.com/.test(url);
+
+// Función para esperar X milisegundos
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const tiktokHandler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text || !text.trim() || !isTikTokUrl(text.trim())) {
+    await conn.reply(
+      m.chat,
+      `Uso: ${usedPrefix + command} <URL de TikTok válida>\nEjemplo: ${usedPrefix + command} https://vt.tiktok.com/ZS29uaYEv/`,
+      m
+    );
+    return;
   }
+  const tiktokUrl = text.trim();
+
+  // Obtener la hora actual en Perú y definir el saludo
+  const currentTime = new Date().toLocaleString("en-US", { timeZone: "America/Lima" });
+  const currentHour = new Date(currentTime).getHours();
+  const greeting = currentHour < 12 ? "Buenos Días 🌅" : currentHour < 18 ? "Buenas Tardes 🌄" : "Buenas Noches 🌃";
+
+  // Extraer el número del remitente para la mención
+  const userNumber = m.sender.split('@')[0];
+
+  // Enviar mensaje de carga con mención y reacción "buscando 📀"
+  const reactionMessage = await conn.reply(
+    m.chat,
+    `${greeting} @${userNumber},\n📀 Buscando contenido en TikTok...`,
+    m,
+    { mentions: [m.sender] }
+  );
+  await conn.sendMessage(
+    m.chat,
+    { react: { text: '📀', key: reactionMessage.key } },
+    { quoted: m }
+  );
 
   try {
-    await m.react('🕒');
-
-    const videoResult = await ttsave.video(text);
-    const { 
-      type, 
-      nickname, 
-      username, 
-      description, 
-      videoInfo, 
-      slides, 
-      audioUrl 
-    } = videoResult;
-
-    let message = `*✔️🍟Downloader tiktok.*
-
-> • *Nombre*: ${nickname || "-"}
-> • *Usuario*: ${username || "-"}
-> • *Descripción*: ${description || "-"}
-`.trim();
-
-    if (type === "slide") {
-      message += "\n> • *Tipo*: Presentación (Imágenes)";
-      await conn.reply(m.chat, message, m);
-
-      for (let slide of slides) {
-        await m.react('✅');
-        await conn.sendFile(m.chat, slide.url, `presentación-${slide.number}.jpg`, "", m);
-      }
-    } 
-    else if (type === "video") {
-      message += "\n> • *Tipo*: Video";
-
-      if (videoInfo.nowm) {
-        await m.react('✅');
-await conn.sendMessage(m.chat, {
-  video: { url: videoInfo.nowm },
-  caption: message,
-  footer: dev,
-  buttons: [
-    {
-      buttonId: `.tiktokmp3 ${text}`,
-      buttonText: {
-        displayText: 'Audio 🎧',
-      },
-    },
-    {
-      buttonId: `.tiktokhd ${text}`,
-      buttonText: {
-        displayText: 'Calidad HD',
-      },
-    },
-  ],
-  viewOnce: true,
-  headerType: 4,
-}, { quoted: m });
-      } else {
-        conn.reply(m.chat, "No se pudo obtener el video sin marca de agua.", m);
-      }
+    const response = await axios.get(`https://api.vreden.my.id/api/tiktok?url=${encodeURIComponent(tiktokUrl)}`, { timeout: 10000 });
+    if (response.data?.status !== 200 || !response.data?.result?.status) {
+      throw new Error("Error en la API de TikTok");
     }
+    const result = response.data.result;
 
-    if (audioUrl) {
+    // Determinar si se trata de un video o un post de imágenes
+    const isVideo = result.data.some(item => item.type.startsWith('nowatermark'));
+
+    if (isVideo) {
+      // Buscar la versión HD sin marca de agua, o la versión estándar si no existe HD
+      const videoData = result.data.find(item => item.type === 'nowatermark_hd') || result.data.find(item => item.type === 'nowatermark');
+      if (!videoData) throw new Error("No se encontró una versión adecuada del video.");
+
+      // Obtener el tamaño del video (en bytes)
+      let fileSize = 0;
+      if (videoData.type === 'nowatermark_hd' && result.size_nowm_hd) {
+        fileSize = result.size_nowm_hd;
+      } else if (result.size_nowm) {
+        fileSize = result.size_nowm;
+      }
+
+      // Enviar reacción de éxito para video
+      await conn.sendMessage(
+        m.chat,
+        { react: { text: '🟢', key: reactionMessage.key } },
+        { quoted: m }
+      );
+
+      // Si el archivo es mayor o igual a 80MB se envía como documento
+      if (fileSize >= 80 * 1024 * 1024) {
+        await conn.sendMessage(
+          m.chat,
+          {
+            document: { url: videoData.url },
+            mimetype: 'video/mp4'
+          },
+          { quoted: m }
+        );
+      } else {
+        // Enviar el video directamente sin descripción
+        await conn.sendMessage(
+          m.chat,
+          {
+            video: { url: videoData.url },
+            mimetype: 'video/mp4',
+            contextInfo: {
+              externalAdReply: {
+                title: "",
+                body: "",
+                previewType: 'PHOTO',
+                thumbnail: result.cover
+                  ? await (await axios.get(result.cover, { responseType: 'arraybuffer' })).data
+                  : null,
+                mediaType: 2,
+                renderLargerThumbnail: true,
+                sourceUrl: tiktokUrl
+              }
+            }
+          },
+          { quoted: m }
+        );
+      }
+    } else {
+      // Es un post de imágenes
+      const photos = result.data.filter(item => item.type === 'photo').map(item => item.url);
+      if (!photos.length) throw new Error("No se encontraron imágenes en este post.");
+
+      for (let photo of photos) {
+        await wait(1000);
+        await conn.sendMessage(
+          m.chat,
+          { image: { url: photo } },
+          { quoted: m }
+        );
+      }
+      // Enviar reacción de éxito para imágenes
+      await conn.sendMessage(
+        m.chat,
+        { react: { text: '🖼️', key: reactionMessage.key } },
+        { quoted: m }
+      );
     }
   } catch (error) {
-    console.error(error);
-    conn.reply(m.chat, `Ocurrió un error al procesar la solicitud. Asegúrate de que el enlace de TikTok sea válido e inténtalo nuevamente.`, m);
+    console.error("❌ Error:", error);
+    await conn.reply(
+      m.chat,
+      `🚨 *Error:* ${error.message || "Error desconocido"}`,
+      m
+    );
+    await conn.sendMessage(
+      m.chat,
+      { react: { text: '❌', key: reactionMessage.key } },
+      { quoted: m }
+    );
   }
 };
 
-handler.help = ["tiktok *<url>*"];
-handler.tags = ["dl"];
-handler.command = ["tiktok"];
-export default handler;
-
-const headers = {
-  authority: "ttsave.app",
-  accept: "application/json, text/plain, */*",
-  origin: "https://ttsave.app",
-  referer: "https://ttsave.app/en",
-  "user-agent": "Postify/1.0.0",
-};
-
-const ttsave = {
-  submit: async function (url, referer) {
-    const headerx = { ...headers, referer };
-    const data = { query: url, language_id: "1" };
-    return axios.post("https://ttsave.app/download", data, { headers: headerx });
-  },
-
-  parse: function ($) {
-    const uniqueId = $("#unique-id").val();
-    const nickname = $("h2.font-extrabold").text();
-    const profilePic = $("img.rounded-full").attr("src");
-    const username = $("a.font-extrabold.text-blue-400").text();
-    const description = $("p.text-gray-600").text();
-
-    const dlink = {
-      nowm: $("a.w-full.text-white.font-bold").first().attr("href"),
-      wm: $("a.w-full.text-white.font-bold").eq(1).attr("href"),
-      audio: $("a[type='audio']").attr("href"),
-      profilePic: $("a[type='profile']").attr("href"),
-      cover: $("a[type='cover']").attr("href"),
-    };
-
-    const stats = {
-      reproducciones: "",
-      meGusta: "",
-      comentarios: "",
-      compartidos: "",
-    };
-
-    $(".flex.flex-row.items-center.justify-center").each((index, element) => {
-      const $element = $(element);
-      const svgPath = $element.find("svg path").attr("d");
-      const value = $element.find("span.text-gray-500").text().trim();
-
-      if (svgPath && svgPath.startsWith("M10 18a8 8 0 100-16")) {
-        stats.reproducciones = value;
-      } else if (svgPath && svgPath.startsWith("M3.172 5.172a4 4 0 015.656")) {
-        stats.meGusta = value || "0";
-      } else if (svgPath && svgPath.startsWith("M18 10c0 3.866-3.582")) {
-        stats.comentarios = value;
-      } else if (svgPath && svgPath.startsWith("M17.593 3.322c1.1.128")) {
-        stats.compartidos = value;
-      }
-    });
-
-    const tituloCancion = $(".flex.flex-row.items-center.justify-center.gap-1.mt-5")
-      .find("span.text-gray-500")
-      .text()
-      .trim();
-
-    const slides = $("a[type='slide']")
-      .map((i, el) => ({
-        number: i + 1,
-        url: $(el).attr("href"),
-      }))
-      .get();
-
-    return {
-      uniqueId,
-      nickname,
-      profilePic,
-      username,
-      description,
-      dlink,
-      stats,
-      tituloCancion,
-      slides,
-    };
-  },
-
-  video: async function (link) {
-    try {
-      const response = await this.submit(link, "https://ttsave.app/en");
-      const $ = cheerio.load(response.data);
-      const result = this.parse($);
-
-      if (result.slides && result.slides.length > 0) {
-        return { type: "slide", ...result };
-      }
-
-      return {
-        type: "video",
-        ...result,
-        videoInfo: {
-          nowm: result.dlink.nowm,
-          wm: result.dlink.wm,
-        },
-      };
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  },
-};
+tiktokHandler.command = /^(tiktok)$/i;
+export default tiktokHandler;
