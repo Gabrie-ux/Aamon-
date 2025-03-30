@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 
 export async function before(m, {conn, participants, groupMetadata}) {
   if (!m.messageStubType || !m.isGroup) return !0;
-  let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => 'https://qu.ax/LJEVX.jpg')
+  let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => 'https://qu.ax/fPklC.jpg')
   let img = await (await fetch(`${pp}`)).buffer()
   let chat = global.db.data.chats[m.chat]
 
@@ -16,7 +16,7 @@ export async function before(m, {conn, participants, groupMetadata}) {
         .replace('@desc', () => groupMetadata.desc || 'sin descripción');
       await conn.sendAi(m.chat, botname, textbot, welcome, img, img, canal)
     } else {
-      let bienvenida = `┌─★ _Barboza Bot_ \n│「 _Bienvenido_ 」\n└┬★ 「 @${m.messageStubParameters[0].split`@`[0]} 」\n   │✑  _Bienvenido_ a\n   │✑  ${groupMetadata.subject}\n   │✑  _Descripción_:\n${groupMetadata.desc || '_sin descripción_'}\n   └───────────────┈ ⳹`
+      let bienvenida = `┌─★ _Aamon_ \n│「 _Bienvenido_ 」\n└┬★ 「 @${m.messageStubParameters[0].split`@`[0]} 」\n   │✑  _Bienvenido_ a\n   │✑  ${groupMetadata.subject}\n   │✑  _Descripción_:\n${groupMetadata.desc || '_sin descripción_'}\n   └───────────────┈ ⳹`
       await conn.sendAi(m.chat, botname, textbot, bienvenida, img, img)
     }
   }
@@ -30,7 +30,7 @@ export async function before(m, {conn, participants, groupMetadata}) {
         .replace('@desc', () => groupMetadata.desc || 'sin descripción');
       await conn.sendAi(m.chat, botname, textbot, bye, img, img)
     } else {
-      let bye = `┌─★ _Barboza Bot_  \n│「 _BAYY_ 👋 」\n└┬★ 「 @${m.messageStubParameters[0].split`@`[0]} 」\n   │✑  _Largate_\n   │✑ _Jamás te quisimos aquí_\n   └───────────────┈ ⳹`
+      let bye = `┌─★ _Aamon_  \n│「 _BAYY_ 👋 」\n└┬★ 「 @${m.messageStubParameters[0].split`@`[0]} 」\n   │✑  _Largate_\n   │✑ _Jamás te quisimos aquí_\n   └───────────────┈ ⳹`
       await conn.sendAi(m.chat, botname, textbot, bye, img, img)
     }
   }
@@ -44,7 +44,7 @@ export async function before(m, {conn, participants, groupMetadata}) {
         .replace('@desc', () => groupMetadata.desc || 'sin descripción');
       await conn.sendAi(m.chat, botname, textbot, bye, img, img)
     } else {
-      let kick = `┌─★ _Barboza Bot_  \n│「 _BAYY_ 👋 」\n└┬★ 「 @${m.messageStubParameters[0].split`@`[0]} 」\n   │✑  _Largate_\n   │✑ _Jamás te quisimos aquí_\n   └───────────────┈ ⳹`
+      let kick = `┌─★ _Aamon_  \n│「 _BAYY_ 👋 」\n└┬★ 「 @${m.messageStubParameters[0].split`@`[0]} 」\n   │✑  _Largate_\n   │✑ _Jamás te quisimos aquí_\n   └───────────────┈ ⳹`
       await conn.sendAi(m.chat, botname, textbot, kick, img, img)
     }
 }}
