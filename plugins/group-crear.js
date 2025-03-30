@@ -9,7 +9,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
   // Notificar al usuario que se está generando la imagen
   await conn.sendMessage(m.chat, {
-    text: `🔨 *BarbozaBot-Ai está creando tu imagen... Por favor espera...*`,
+    text: `🔨 *Aamon está creando tu imagen... Por favor espera...*`,
   });
 
   try {
@@ -29,7 +29,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     // Enviar la imagen al usuario
     await conn.sendMessage(m.chat, {
       image: imageBuffer,
-      caption: `🖼️ *Aquí está tu imagen generada por BarbozaBot-Ai:*`,
+      caption: `🖼️ *Aquí está tu imagen generada por Aamon:*`,
     });
   } catch (error) {
     console.error("Error al generar la imagen:", error);
