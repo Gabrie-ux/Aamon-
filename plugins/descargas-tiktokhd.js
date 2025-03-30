@@ -1,79 +1,141 @@
-import axios from "axios";
-import FormData from "form-data";
-import cheerio from "cheerio";
+import axios from 'axios';
 
-let handler = async (m, { conn, usedPrefix, command, text, args }) => {
-  if (!text) return conn.reply(m.chat, '*\`Ingresa El link Del vídeo a descargar 🤍\`*', m, rcanal)
-    try {
-let data = await tiktokdl(text)
-console.log(data)
-  let start = Date.now();
-  let sp = (Date.now() - start) + 'ms'
-  let cap = `*\`[ TIKTOK CALIDAD NORMAL ]\`*`
-  let capp = `*\`[ TIKTOK CALIDAD HD ]\`*`
-  await m.react('🕓');
-  await conn.sendMessage(m.chat, {
-                    video: {
-                        url: data.server1.url
-                    },
-                    caption: cap
-                }, {
-                    quoted: m
-                })
-await conn.sendMessage(m.chat, {
-                    video: {
-                        url: data.serverHD.url
-                    },
-                    caption: capp
-                }, {
-                    quoted: m
-                })
-await m.react('✅')
-  } catch {
-    await m.react('✖️')
+// Validador para que solo se procese URLs de TikTok
+const isTikTokUrl = (url) => /https?:\/\/(www\.)?(vm\.)?tiktok\.com/.test(url);
+
+// Función para esperar X milisegundos
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const tiktokHandler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text || !text.trim() || !isTikTokUrl(text.trim())) {
+    await conn.reply(
+      m.chat,
+      `Uso: ${usedPrefix + command} <URL de TikTok válida>\nEjemplo: ${usedPrefix + command} https://vt.tiktok.com/ZS29uaYEv/`,
+      m
+    );
+    return;
   }
-}
-handler.help = ['tiktokhd *<url>*']
-handler.tags = ['dl']
-handler.command = /^(tiktokhd)$/i;
+  const tiktokUrl = text.trim();
 
-export default handler
+  // Obtener la hora actual en Perú y definir el saludo
+  const currentTime = new Date().toLocaleString("en-US", { timeZone: "America/Lima" });
+  const currentHour = new Date(currentTime).getHours();
+  const greeting = currentHour < 12 ? "Buenos Días 🌅" : currentHour < 18 ? "Buenas Tardes 🌄" : "Buenas Noches 🌃";
 
-async function tiktokdl(url) {
-    let result = {};
-    let form = new FormData();
-    form.append("q", url);
-    form.append("lang", "id");
+  // Extraer el número del remitente para la mención
+  const userNumber = m.sender.split('@')[0];
 
-    try {
-        let { data } = await axios("https://savetik.co/api/ajaxSearch", {
-            method: "post",
-            data: form,
-            headers: {
-                "content-type": "application/x-www-form-urlencoded",
-                "User-Agent": "PostmanRuntime/7.32.2"
-            }
-        });
+  // Enviar mensaje de carga con mención y reacción "buscando 📀"
+  const reactionMessage = await conn.reply(
+    m.chat,
+    `${greeting} @${userNumber},\n📀 Buscando contenido en TikTok...`,
+    m,
+    { mentions: [m.sender] }
+  );
+  await conn.sendMessage(
+    m.chat,
+    { react: { text: '📀', key: reactionMessage.key } },
+    { quoted: m }
+  );
 
-        let $ = cheerio.load(data.data);
-
-        result.status = true;
-        result.caption = $("div.video-data > div > .tik-left > div > .content > div > h3").text();
-        result.server1 = {
-            quality: "MEDIUM",
-            url: $("div.video-data > div > .tik-right > div > p:nth-child(1) > a").attr("href")
-        };
-        result.serverHD = {
-            quality: $("div.video-data > div > .tik-right > div > p:nth-child(3) > a").text().split("MP4 ")[1],
-            url: $("div.video-data > div > .tik-right > div > p:nth-child(3) > a").attr("href")
-        };
-        result.audio = $("div.video-data > div > .tik-right > div > p:nth-child(4) > a").attr("href");
-
-    } catch (error) {
-        result.status = false;
-        result.message = error;
-        console.log(result);
+  try {
+    const response = await axios.get(`https://api.vreden.my.id/api/tiktok?url=${encodeURIComponent(tiktokUrl)}`, { timeout: 10000 });
+    if (response.data?.status !== 200 || !response.data?.result?.status) {
+      throw new Error("Error en la API de TikTok");
     }
+    const result = response.data.result;
 
-    return result;
-}
+    // Determinar si se trata de un video o un post de imágenes
+    const isVideo = result.data.some(item => item.type.startsWith('nowatermark'));
+
+    if (isVideo) {
+      // Buscar la versión HD sin marca de agua, o la versión estándar si no existe HD
+      const videoData = result.data.find(item => item.type === 'nowatermark_hd') || result.data.find(item => item.type === 'nowatermark');
+      if (!videoData) throw new Error("No se encontró una versión adecuada del video.");
+
+      // Obtener el tamaño del video (en bytes)
+      let fileSize = 0;
+      if (videoData.type === 'nowatermark_hd' && result.size_nowm_hd) {
+        fileSize = result.size_nowm_hd;
+      } else if (result.size_nowm) {
+        fileSize = result.size_nowm;
+      }
+
+      // Enviar reacción de éxito para video
+      await conn.sendMessage(
+        m.chat,
+        { react: { text: '🟢', key: reactionMessage.key } },
+        { quoted: m }
+      );
+
+      // Si el archivo es mayor o igual a 80MB se envía como documento
+      if (fileSize >= 80 * 1024 * 1024) {
+        await conn.sendMessage(
+          m.chat,
+          {
+            document: { url: videoData.url },
+            mimetype: 'video/mp4'
+          },
+          { quoted: m }
+        );
+      } else {
+        // Enviar el video directamente sin descripción
+        await conn.sendMessage(
+          m.chat,
+          {
+            video: { url: videoData.url },
+            mimetype: 'video/mp4',
+            contextInfo: {
+              externalAdReply: {
+                title: "",
+                body: "",
+                previewType: 'PHOTO',
+                thumbnail: result.cover
+                  ? await (await axios.get(result.cover, { responseType: 'arraybuffer' })).data
+                  : null,
+                mediaType: 2,
+                renderLargerThumbnail: true,
+                sourceUrl: tiktokUrl
+              }
+            }
+          },
+          { quoted: m }
+        );
+      }
+    } else {
+      // Es un post de imágenes
+      const photos = result.data.filter(item => item.type === 'photo').map(item => item.url);
+      if (!photos.length) throw new Error("No se encontraron imágenes en este post.");
+
+      for (let photo of photos) {
+        await wait(1000);
+        await conn.sendMessage(
+          m.chat,
+          { image: { url: photo } },
+          { quoted: m }
+        );
+      }
+      // Enviar reacción de éxito para imágenes
+      await conn.sendMessage(
+        m.chat,
+        { react: { text: '🖼️', key: reactionMessage.key } },
+        { quoted: m }
+      );
+    }
+  } catch (error) {
+    console.error("❌ Error:", error);
+    await conn.reply(
+      m.chat,
+      `🚨 *Error:* ${error.message || "Error desconocido"}`,
+      m
+    );
+    await conn.sendMessage(
+      m.chat,
+      { react: { text: '❌', key: reactionMessage.key } },
+      { quoted: m }
+    );
+  }
+};
+
+tiktokHandler.command = /^(tiktokhd)$/i;
+export default tiktokHandler;
