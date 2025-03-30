@@ -65,7 +65,7 @@ let handler = async (m, { conn, text, usedPrefix }) => {
         audio: { url: downloadUrl },
         mimetype: "audio/mpeg",
         fileName: `${title}.mp3`,
-        caption: `🎶 *Descarga completada por Barboza Bot AI*`,
+        caption: `🎶 *Descarga completada por Aamon Bot AI*`,
       },
       { quoted: m }
     );
