@@ -38,7 +38,7 @@ let handler = async (m, { conn, text, usedPrefix }) => {
     const { title, duration, views, author, url: videoUrl } = metadata;
     const { url: downloadUrl } = download;
 
-    const description = `⌘━─━─≪ * Bot AI* ≫─━─━⌘\n\n🎵 *Título:* ${title}\n⏳ *Duración:* ${duration.timestamp || "Desconocida"}\n👁️ *Vistas:* ${views.toLocaleString() || "Desconocidas"}\n✍️ *Autor:* ${author.name || "Desconocido"}\n🔗 *Enlace del video:* ${videoUrl}\n\n✨ *Tu archivo se está enviando como documento, por favor espera...*\n\n⌘━━─≪ Power By Barboza Bot AI ≫─━━⌘`;
+    const description = `⌘━─━─≪ * Aamon* ≫─━─━⌘\n\n🎵 *Título:* ${title}\n⏳ *Duración:* ${duration.timestamp || "Desconocida"}\n👁️ *Vistas:* ${views.toLocaleString() || "Desconocidas"}\n✍️ *Autor:* ${author.name || "Desconocido"}\n🔗 *Enlace del video:* ${videoUrl}\n\n✨ *Tu archivo se está enviando como documento, por favor espera...*\n\n⌘━━─≪ Power By Aamon ≫─━━⌘`;
 
     await conn.sendMessage(m.chat, { text: description, edit: key });
     await conn.sendMessage(
