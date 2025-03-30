@@ -29,7 +29,7 @@ global.wm = 'Aamon 🌪️'
 global.dev = '© Powered By Aamon❀'
 global.wait = '🌪️ *Aɢᴜᴀʀᴅᴇ ᴜɴ ᴍᴏᴍᴇɴᴛᴏ, sᴏʏ ʟᴇɴᴛ𝙾... ฅ^•ﻌ•^ฅ\n\n> Aamon 🌪️*'
 global.botname = '[ 🌪️Aamon bot Ai]'
-global.textbot = `Powered By Bot Barboza🌪️`
+global.textbot = `Powered By Bot Aamon🌪️`
 global.listo = '*Aqui tiene ฅ^•ﻌ•^ฅ*'
 global.namechannel = 'Aamon bot 🌪️'
 
