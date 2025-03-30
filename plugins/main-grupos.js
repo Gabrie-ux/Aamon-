@@ -14,6 +14,9 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     // Asegúrate de definir 'imagen2' correctamente antes de usarlo
     let imagen2 = 'https://qu.ax/fPklC.jpg';
 
+    // Define los emojis que quieres usar
+    let emojis = '🍁';
+
     await conn.sendFile(m.chat, imagen2, "ian.jpg", grupos, m, null, rcanal);
     await m.react(emojis);
 }
