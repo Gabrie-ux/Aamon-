@@ -1,4 +1,4 @@
-
+ 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!text) return conn.reply(m.chat, '🌠 ¿Qué comando quieres sugerir?', m);
     if (text.length < 5) return conn.reply(m.chat, '🌠 La sugerencia debe ser más de 5 caracteres.', m);
@@ -9,10 +9,20 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const channelChatId = '120363419364337473@newsletter';
     const creatorsChatId = "51941658192"; 
 
-    await conn.reply(channelChatId, m.quoted ? teks + '\n' + m.quoted.text : teks, m, { mentions: conn.parseMention(teks) });
-    await conn.reply(creatorsChatId, teks, m, { mentions: conn.parseMention(teks) });
+    try {
+        const jidDecoded = (0, WABinary_1.jidDecode)(m.sender);
+        if (!jidDecoded || !jidDecoded.user) {
+            throw new Error('JID inválido o no se pudo decodificar.');
+        }
 
-    m.reply('🌠 La sugerencia se envió al Staff De aamon y a los creadores.');
+        await conn.reply(channelChatId, m.quoted ? teks + '\n' + m.quoted.text : teks, m, { mentions: conn.parseMention(teks) });
+        await conn.reply(creatorsChatId, teks, m, { mentions: conn.parseMention(teks) });
+
+        m.reply('🌠 La sugerencia se envió al Staff De aamon y a los creadores.');
+    } catch (error) {
+        console.error('Error al enviar la sugerencia:', error);
+        m.reply('❌ Ocurrió un error al enviar tu sugerencia. Por favor intenta nuevamente.');
+    }
 }
 
 handler.help = ['sugerencia2'];
