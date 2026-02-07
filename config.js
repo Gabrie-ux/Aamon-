@@ -10,7 +10,7 @@ import axios from 'axios'
 
 global.owner = [
   ['584146277368', 'Barboza OFC',true],
-  ['51941247696', 'Aamon',true],
+  ['51941658192', 'Aamon',true],
   
 ]
 
